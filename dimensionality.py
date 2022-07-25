@@ -1,12 +1,24 @@
-# Import the necessary libraries.
+# Libraries
 import os
-import scipy.special
-from math import comb
+from xmlrpc.client import FastParser
+import pyvista                                   # Used to allow interaction with the console and file system.
+import scipy.special                        # Used to bring in 2-factor binomial transformation.
+from math import comb                       # Used to bring in the mathematical Combination (C) operation.
+import numpy as np                          # Used to bring in matrix notation and operations.
+import matplotlib.pyplot as plt             # Used to bring in visualization libraries.                    
+from mpl_toolkits.mplot3d import Axes3D     
+import pyvista as pv
+from pyvista import examples
+
 
 class shape():
+
     def points(dimensions):
         points = 2**dimensions
-        points = "{:,}".format(points)
+        # points = "{:,}".format(points)
+            # this causes "invalid literal for int() with base 10: '1,024' (meaning that the comma in the format is breaking the code.
+            # If the value of points is to be used elsewhere, this format function should be used at that point in time via another function, 
+            # and not part of the class.
         return points
     
     def edges(dimensions):
@@ -77,45 +89,71 @@ class shape():
         hypercube = "{:,}".format(hypercube)
         return hypercube
 
-# number E_sub(m,n) of m-dimensional faces of a n-dimensional hypercube
-#                        0face  1face  2face  3face  4face 5face 6face 7face 8face 9face 10face
-pointArray =            (    1,     0,     0,     0,     0,    0,    0,    0,    0,    0,     0) # 0D
-lineArray =             (    2,     1,     0,     0,     0,    0,    0,    0,    0,    0,     0) # 1D
-squareArray =           (    4,     4,     1,     0,     0,    0,    0,    0,    0,    0,     0) # 2D
-cubeArray =             (    8,    12,     6,     1,     0,    0,    0,    0,    0,    0,     0) # 3D
-tesseractArray =        (   16,    32,    24,     8,     1,    0,    0,    0,    0,    0,     0) # 4D
-penteractArray =        (   32,    80,    80,    40,    10,    1,    0,    0,    0,    0,     0) # 5D
-hexeractArray =         (   64,   192,   240,   160,    60,   12,    1,    0,    0,    0,     0) # 6D
-hepteractArray =        (  128,   448,   672,   560,   280,   84,   14,    1,    0,    0,     0) # 7D
-octeractArray =         (  256,  1024,  1792,  1792,  1120,  448,  112,   16,    1,    0,     0) # 8D
-enneractArray =         (  512,  2304,  4608,  5376,  4032, 2016,  672,  144,   18,    1,     0) # 9D
-dekeractArray =         ( 1024,  5120, 11520, 15360, 13440, 8064, 3360,  960,  180,   20,     1) # 10D
+class matrices():
+    def projectionMatrix(dimensions):
+        # Should result in a projection matrix one row less than the number of dimensions requiested. This is what helps the matrix multiplication
+        # reduce the number of coordinates.
+        rows = int(0)
+        cols = int(0)
 
-# The number of "0-face"  Points (Vertex)                in each Array[1]  is 2^n                                 
-# The number of "1-face"  Lines Segments (Edge)          in each Array[2]  is n*2^(n-1)                           
-# The number of "2-face"  Squares (Face)                 in each Array[3]  is where n = n-1, let n*(n+1)*2^(n-2)    offset 1 zeroes
-# The number of "3-face"  Cubes (Cell)                   in each Array[4]  is [Binomial[n, 3]*2^(n-3)             
-# The number of "4-face"  Tesseracts (hypercube)         in each Array[5]  is 2^(n-4)*C(n,4)                      
-# The number of "5-face"  Penteracts (5D hypercubes)     in each Array[6]  is 2^(n-5)*binomial(n,5)               
-# The number of "6-face"  Hexeracts (n+6D hypercubes)    in each Array[7]  is where n = n-5, let 2^n*C(n+6,6)       offset 6 zeroes
-# The number of "7-face"  Hepteracts (n+7D hypercubes)   in each Array[8]  is 2^(n-7)*binomial(n,7)               
-# The number of "8-face"  Octeracts (n+8D hypercubes)    in each Array[9]  is binomial(n+8,8) * 2^n                 offset 8 zeroes
-# The number of "9-face"  Enneracts (n+9D hypercubes)    in each Array[10] is binomial(n+9,9) * 2^n                 offset 9 zeroes
-# The number of "10-face" Dekeract (n+10D hypercubes)    in each Array[11] is binomial(0+n-1,n-1) * 2^0             offset 10 or more zeroes based on dimensionality
+        projectionMatrix = np.ndarray(shape=(dimensions-1, dimensions), dtype=np.int32)
+
+        for rows in range(dimensions-1):
+            for cols in range(dimensions):
+                if cols == rows:
+                    projectionMatrix[rows, cols] = 1
+                else:
+                    projectionMatrix[rows, cols] = 0
+
+        return projectionMatrix
+
+    def verticesMatrix(dimensions, magnitude):
+        if dimensions == 0:
+            verticesMatrix = np.array([0, 0, 0])
+                # Ensures that the return value is a 3D coordinate for plotting. 
+            rows = 1
+            return verticesMatrix, rows
+        else:
+            verticesMatrix = magnitude * (2*((np.arange(2**dimensions)[:,None] & (1 << np.arange(dimensions))) > 0) - 1)
+            rows, cols = verticesMatrix.shape
+                # Handles 3D and all higher dimensional requests.
+
+            if dimensions == 1:
+                remainingAxes = np.array([0,0])
+                verticesMatrix = np.insert(verticesMatrix,1,remainingAxes,axis=1)
+                verticesMatrix = np.insert(verticesMatrix,2,remainingAxes,axis=1)
+                # If the user has requested 1D, Ensures that the return value is a 3D coordinate for plotting. 
+            elif dimensions ==2:
+                remainingAxes = np.array([0,0,0,0])
+                verticesMatrix = np.insert(verticesMatrix,2,remainingAxes,axis=1)          
+                # If the user has requested 2D, Ensures that the return value is a 3D coordinate for plotting. 
+
+            totalRequestedVertices = int(shape.points(dimensions))
+
+            if rows != totalRequestedVertices:
+                print("array doesn't match request")
+            else:
+                return verticesMatrix, rows
+       
+def showDimensionality():
+    dims = int(input("How many dimensions?\n"))
+        # Prompt user for number of dimensions to calculate attributes for.
+    magnitude = int(input("What magnitude do you want?\n"))
+        #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
+
+    if dims > 2:
+        print ("Matrix multiplication has not yet been implemented. You are limited to 0D (points), 1D (lines), and 2D (faces) shapes.")
+    else:
+        myVertices = matrices.verticesMatrix(dims, magnitude)
+
+        pl = pyvista.Plotter()
+        pl.set_scale(xscale=10, yscale=10, zscale=10)
+        pl.add_mesh(pyvista.PolyData(myVertices[0], force_float=False))
+        pl.view_isometric()
+        pl.add_bounding_box()
+        pl.show()
+    
 
 os.system('CLS')
-
-dims = int(input("How many dimensions?\n"))
-print("\nA shape with ", dims, " dimensions has:\n- ", 
-    shape.points(dims), " Vertex(eces) or Point(s).\n- ",
-    shape.edges(dims), " Edge(s) or Line Segment(s).\n- ",
-    shape.square(dims), " Face(s) or Square(s).\n- ",
-    shape.cube(dims), " Cell(s) or Cube(s).\n- ",
-    shape.tesseract(dims), " Tesseract(s) or Hypercube(s).\n- ",
-    shape.penteract(dims), " Penteract(s) or 5D Hypercube(s).\n- ",
-    shape.hexeract(dims), " Hexeract(s) or 6D Hypercube(s).\n- ",
-    shape.hepteract(dims), " Hepteract(s) or 7D-Hypercube(s).\n- ",
-    shape.octeract(dims), " Octeract(s) or 8D Hypercube(s).\n- ",
-    shape.enneract(dims), " Enneract(s) or 9D Hypercube(s).\n- ",
-    shape.dekeract(dims), " Dekeract(s) or 9D Hypercube(s).\n- ",    
-)
+showDimensionality()
+    # if dimensions higher than 3 are requested, conduct matrix multplication on each row of the vertices matrix to generate a 3D vector, and then display.
