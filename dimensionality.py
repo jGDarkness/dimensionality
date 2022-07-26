@@ -1,15 +1,16 @@
 # Libraries
-import os
-from xmlrpc.client import FastParser
-import pyvista                                   # Used to allow interaction with the console and file system.
-import scipy.special                        # Used to bring in 2-factor binomial transformation.
-from math import comb                       # Used to bring in the mathematical Combination (C) operation.
-import numpy as np                          # Used to bring in matrix notation and operations.
-import matplotlib.pyplot as plt             # Used to bring in visualization libraries.                    
-from mpl_toolkits.mplot3d import Axes3D     
-import pyvista as pv
-from pyvista import examples
 
+import os
+import warnings                             # Console and file system interaction.
+import scipy.special                        # 2-factor binomial transformation.
+from math import comb                       # Mathematical Combination (C) operation.
+import numpy as np                          # Matrix/array notation and operations.
+import pyvista as pv                        # Data visualisations.
+from pyvista import examples                # Data visualisations.
+import warnings                             # Suppress force_float=True warnings from matrix operations.
+
+warnings.filterwarnings('ignore', '.*force_float.*')
+    # Suppress 'force_float=True' warning messages from pyvista.
 
 class shape():
 
@@ -138,7 +139,8 @@ class matrices():
 def showDimensionality():
     dims = int(input("How many dimensions?\n"))
         # Prompt user for number of dimensions to calculate attributes for.
-    magnitude = int(input("What magnitude do you want?\n"))
+    # magnitude = int(input("What magnitude do you want?\n"))
+    magnitude = int(1024)
         #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
 
     if dims > 2:
@@ -146,13 +148,39 @@ def showDimensionality():
     else:
         myVertices = matrices.verticesMatrix(dims, magnitude)
 
-        pl = pyvista.Plotter()
-        pl.set_scale(xscale=10, yscale=10, zscale=10)
-        pl.add_mesh(pyvista.PolyData(myVertices[0], force_float=False))
-        pl.view_isometric()
-        pl.add_bounding_box()
+        numberOfPoints = shape.points(dims)
+        
+        myLabels = ()
+        for rows in range(numberOfPoints):
+            myLabels = np.append(myLabels, rows+1)
+            # Create a list of sequentially numbered labels corresponding to the number of vertices in the final result.
+
+        pl = pv.Plotter()
+            
+        pl.add_camera_orientation_widget(animate=True, n_frames=180)
+        pl.add_axes (line_width=3, labels_off=False)
+        pl.add_floor(face='-z', i_resolution=1024, j_resolution=1024, color='black', line_width=3, edge_color='white', opacity=0.2)
+
+
+
+        pl.add_mesh(pv.PolyData(myVertices[0]))
+        #pl.add_bounding_box(line_width=1, color='white')
+        pl.add_point_labels(
+            myVertices[0], 
+            myLabels, 
+            font_size=12, 
+            point_color='red', 
+            point_size=15, 
+            render_points_as_spheres=True, 
+            always_visible=True,
+            fill_shape=False)
+                # Need to find a way to fix the force_float=False warning. 
+            
+        pl.add_lines(myVertices[0], color='white', width=2)
+        
         pl.show()
-    
+
+
 
 os.system('CLS')
 showDimensionality()
