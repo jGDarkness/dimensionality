@@ -18,6 +18,7 @@ import warnings
     # Capture and handle warnings.
 import tkinter                    
 from vtkmodules.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
+from zmq import NULL
     # Support for GUI interface using Tk          
 #
 ### END LIBRARIES ###################################################################################################################################################
@@ -186,18 +187,27 @@ class flatten():
             while row <= vertices - 1 :
                 myFlattenedVertices[row] = np.matmul(myProjection, originalVertices[0][row])
                 row += 1
+            print ("Flattened Vertices Returned:\n", myFlattenedVertices)
             return myFlattenedVertices
 
 def showDimensionality():
-    dims = 11
+    dims = 5
     magnitude = int(1)
         #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
     myVertices = matrices.verticesMatrix(dims, magnitude)
     myVerticesRows, myVerticesColsAsRows = myVertices[0].shape
 
+    myNewVertices = NULL
+
     if dims > 3:
         dimensions = dims
         
+        while dimensions > dims -3:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            myVertices[0] = myNewVertices
+            dimensions -= 1
+
+        """
         if dimensions == 11:
             myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
             dimensions = dimensions - 1
@@ -235,7 +245,7 @@ def showDimensionality():
             quit()
         
         print (myVertices)
-
+        """
     else:
         myVertices = matrices.verticesMatrix(dims, magnitude)
 
