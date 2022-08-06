@@ -1,13 +1,26 @@
-# Libraries
-
+### LIBRARIES #######################################################################################################################################################
+#
 import os
-import warnings                             # Console and file system interaction.
-import scipy.special                        # 2-factor binomial transformation.
-from math import comb                       # Mathematical Combination (C) operation.
-import numpy as np                          # Matrix/array notation and operations.
-import pyvista as pv                        # Data visualisations.
-from pyvista import examples                # Data visualisations.
-import warnings                             # Suppress force_float=True warnings from matrix operations.
+from attr import NOTHING
+from matplotlib import projections
+from pyparsing import null_debug_action                                           
+    # Console and file system interation.
+import scipy.special               
+    # 2-factor binomial transformation. 
+from math import comb                   
+    # Mathematical "combination" nCr opartion.  
+import numpy as np                          
+    # Mostly for Matrix/Array notation and operations.
+import pyvista as pv                       
+from pyvista import examples              
+    # Data visulizations
+import warnings               
+    # Capture and handle warnings.
+import tkinter                    
+from vtkmodules.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
+    # Support for GUI interface using Tk          
+#
+### END LIBRARIES ###################################################################################################################################################
 
 warnings.filterwarnings('ignore', '.*force_float.*')
     # Suppress 'force_float=True' warning messages from pyvista.
@@ -135,53 +148,129 @@ class matrices():
                 print("array doesn't match request")
             else:
                 return verticesMatrix, rows
-       
-def showDimensionality():
-    dims = int(input("How many dimensions?\n"))
-        # Prompt user for number of dimensions to calculate attributes for.
-    # magnitude = int(input("What magnitude do you want?\n"))
-    magnitude = int(1024)
-        #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
+    
+    def rotationMatrix(rotationAxis, theta):
+        rotationXTheta = np.array(
+            [1,             0,                0],
+            [0, np.cos(theta), -(np.sin(theta))],
+            [0, np.sin(theta),    np.cos(theta)]
+        )
 
-    if dims > 2:
-        print ("Matrix multiplication has not yet been implemented. You are limited to 0D (points), 1D (lines), and 2D (faces) shapes.")
+        rotationYTheta = np.array(
+            [   np.cos(theta), 0,  np.sin(theta)],
+            [               0, 1,              0],
+            [-(np.sin(theta)), 0,  np.cos(theta)]
+        )
+
+        rotationZTheta = np.array(
+            [np.cos(theta), -(np.sin(theta)), 0],
+            [np.sin(theta),    np.cos(theta), 0],
+            [            0,                0, 1]
+        )
+
+class flatten():
+    def myDimension(vertices, dims, magnitude, originalVertices):
+        
+        myProjection = matrices.projectionMatrix(dims)
+        myProjectionRows, myProjectionCols = np.shape(myProjection)
+
+        myVerticesRows, myVerticesColsAsRows = originalVertices[0].shape
+        
+        if myProjectionCols != myVerticesColsAsRows:
+            print ("There was a fatal error in the matrix at dimension:", dims)
+        else:
+            os.system("CLS")
+            row = 0
+            print("\nFlattening dimension:", dims)
+            myFlattenedVertices = np.ndarray(shape=(myVerticesRows, myProjectionCols-1))
+            while row <= vertices - 1 :
+                myFlattenedVertices[row] = np.matmul(myProjection, originalVertices[0][row])
+                row += 1
+            return myFlattenedVertices
+
+def showDimensionality():
+    dims = 11
+    magnitude = int(1)
+        #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
+    myVertices = matrices.verticesMatrix(dims, magnitude)
+    myVerticesRows, myVerticesColsAsRows = myVertices[0].shape
+
+    if dims > 3:
+        dimensions = dims
+        
+        if dimensions == 11:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 10:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 9:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 8:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 7:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 6:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 5:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+            dimensions = dimensions - 1
+
+        if dimensions == 4:
+            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+
+        myVertices = myNewVertices
+        if myVertices == None:
+            print ("No dimensions were flattened all the way to 3D for projection.")
+            quit()
+        
+        print (myVertices)
+
     else:
         myVertices = matrices.verticesMatrix(dims, magnitude)
 
-        numberOfPoints = shape.points(dims)
+    numberOfPoints = shape.points(dims)
+    
+    myLabels = ()
+    for rows in range(numberOfPoints):
+        myLabels = np.append(myLabels, rows+1)
+        # Create a list of sequentially numbered labels corresponding to the number of vertices in the final result.
+
+    pl = pv.Plotter()
         
-        myLabels = ()
-        for rows in range(numberOfPoints):
-            myLabels = np.append(myLabels, rows+1)
-            # Create a list of sequentially numbered labels corresponding to the number of vertices in the final result.
+    pl.add_camera_orientation_widget(animate=True, n_frames=180)
+    pl.add_axes (line_width=3, labels_off=False)
+    pl.add_floor(face='-z', i_resolution=1024, j_resolution=1024, color='black', line_width=3, edge_color='white', opacity=0.2)
 
-        pl = pv.Plotter()
-            
-        pl.add_camera_orientation_widget(animate=True, n_frames=180)
-        pl.add_axes (line_width=3, labels_off=False)
-        pl.add_floor(face='-z', i_resolution=1024, j_resolution=1024, color='black', line_width=3, edge_color='white', opacity=0.2)
-
-
-
-        pl.add_mesh(pv.PolyData(myVertices[0]))
-        #pl.add_bounding_box(line_width=1, color='white')
-        pl.add_point_labels(
-            myVertices[0], 
-            myLabels, 
-            font_size=12, 
-            point_color='red', 
-            point_size=15, 
-            render_points_as_spheres=True, 
-            always_visible=True,
-            fill_shape=False)
-                # Need to find a way to fix the force_float=False warning. 
-            
-        pl.add_lines(myVertices[0], color='white', width=2)
+    pl.add_mesh(pv.PolyData(myVertices[0]))
+    #pl.add_bounding_box(line_width=1, color='white')
+    
+    """ I need to figure out how to do the unit distance testing between coordinates.
+    pl.add_point_labels(
+        myVertices[0], 
+        myLabels, 
+        font_size=12, 
+        point_color='red', 
+        point_size=15, 
+        render_points_as_spheres=True, 
+        always_visible=True,
+        fill_shape=False)
+            # Need to find a way to fix the force_float=False warning. 
         
-        pl.show()
+    pl.add_lines(myVertices[0], color='white', width=2)
+    """
 
+    pl.show()
 
-
-os.system('CLS')
 showDimensionality()
     # if dimensions higher than 3 are requested, conduct matrix multplication on each row of the vertices matrix to generate a 3D vector, and then display.
