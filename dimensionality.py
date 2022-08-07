@@ -1,9 +1,7 @@
 ### LIBRARIES #######################################################################################################################################################
 #
 import os
-from attr import NOTHING
 from matplotlib import projections
-from pyparsing import null_debug_action                                           
     # Console and file system interation.
 import scipy.special               
     # 2-factor binomial transformation. 
@@ -18,13 +16,14 @@ import warnings
     # Capture and handle warnings.
 import tkinter                    
 from vtkmodules.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
-from zmq import NULL
     # Support for GUI interface using Tk          
 #
 ### END LIBRARIES ###################################################################################################################################################
 
 warnings.filterwarnings('ignore', '.*force_float.*')
     # Suppress 'force_float=True' warning messages from pyvista.
+warnings.filterwarnings('ignore', '.*auto_close*')
+    # Supress 'auto-close' warning from pyvista.
 
 class shape():
 
@@ -178,109 +177,93 @@ class flatten():
         myVerticesRows, myVerticesColsAsRows = originalVertices[0].shape
         
         if myProjectionCols != myVerticesColsAsRows:
-            print ("There was a fatal error in the matrix at dimension:", dims)
+            print ("There was a fatal error in the matrix at dimension", dims)
         else:
             os.system("CLS")
             row = 0
-            print("\nFlattening dimension:", dims)
             myFlattenedVertices = np.ndarray(shape=(myVerticesRows, myProjectionCols-1))
             while row <= vertices - 1 :
                 myFlattenedVertices[row] = np.matmul(myProjection, originalVertices[0][row])
                 row += 1
-            print ("Flattened Vertices Returned:\n", myFlattenedVertices)
-            return myFlattenedVertices
+            return myFlattenedVertices, myVerticesRows
 
 def showDimensionality():
-    dims = 5
+    dims = 3
     magnitude = int(1)
         #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
-    myVertices = matrices.verticesMatrix(dims, magnitude)
-    myVerticesRows, myVerticesColsAsRows = myVertices[0].shape
-
-    myNewVertices = NULL
-
+    
     if dims > 3:
-        dimensions = dims
-        
-        while dimensions > dims -3:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            myVertices[0] = myNewVertices
-            dimensions -= 1
-
-        """
-        if dimensions == 11:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 10:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 9:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 8:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 7:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 6:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 5:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-            dimensions = dimensions - 1
-
-        if dimensions == 4:
-            myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
-
-        myVertices = myNewVertices
-        if myVertices == None:
-            print ("No dimensions were flattened all the way to 3D for projection.")
-            quit()
-        
-        print (myVertices)
-        """
-    else:
         myVertices = matrices.verticesMatrix(dims, magnitude)
+        myVerticesRows, myVerticesColsAsRows = myVertices[0].shape
+        myNewVertices = np.ndarray(shape=(myVerticesRows, myVerticesColsAsRows), dtype=np.int32)
+
+        pass
+        # I can't quite figure out how to recurse through the array flattening process and get an actual result.
+        #dimensions = dims
+        
+        #while dimensions > 3:
+        #    myNewVertices = flatten.myDimension(myVerticesRows, dimensions, magnitude, myVertices)
+        #    dimensions -= 1
+        ###########################################################################################################
+    else:
+        myNewVertices = matrices.verticesMatrix(dims, magnitude)
 
     numberOfPoints = shape.points(dims)
     
     myLabels = ()
     for rows in range(numberOfPoints):
-        myLabels = np.append(myLabels, rows+1)
+        myLabels = np.append(myLabels, rows + 1)
         # Create a list of sequentially numbered labels corresponding to the number of vertices in the final result.
 
-    pl = pv.Plotter()
-        
-    pl.add_camera_orientation_widget(animate=True, n_frames=180)
-    pl.add_axes (line_width=3, labels_off=False)
-    pl.add_floor(face='-z', i_resolution=1024, j_resolution=1024, color='black', line_width=3, edge_color='white', opacity=0.2)
+    match dims:
+        case 0:
+            myLegend = "0D: A Point"
+        case 1:
+            myLegend = "1D: A Line"
+        case 2:
+            myLegend = "2D: A Plane"
+        case 3:
+            myLegend = "3D: A Cube"
+        case 4:
+            myLegend = "4D: A Tesseract, Flattened to 3D"
+        case 5:
+            myLegend = "5D: A Penteract, Flattened to 3D"
+        case 7:
+            myLegend = "6D: A Hexeract, Flattened to 3D"
+        case 8:
+            myLegend = "7D: An Hepteract, Flattened to 3D"
+        case 9:
+            myLegend = "8D: An Octeract, Flattened to 3D"
+        case 10:
+            myLegend = "9D: An Enneract, Flattened to 3D"
+        case 11:
+            myLegend = "10D: A Tesseract of n=10 Dimensions"
 
-    pl.add_mesh(pv.PolyData(myVertices[0]))
-    #pl.add_bounding_box(line_width=1, color='white')
     
-    """ I need to figure out how to do the unit distance testing between coordinates.
+    
+
+    pl = pv.Plotter()
+    
+    viewup = [0,0,1]    
+    orbit = pl.generate_orbital_path(factor=4.0, n_points=360, shift=3.0, viewup=viewup)
+
+    pl.add_axes (line_width=3, labels_off=False)
+    pl.add_bounding_box(line_width=1, color='white')
+    pl.add_mesh(pv.PolyData(myNewVertices[0]), smooth_shading=True, label=myLegend, color='white')
     pl.add_point_labels(
-        myVertices[0], 
+        myNewVertices[0], 
         myLabels, 
         font_size=12, 
         point_color='red', 
-        point_size=15, 
+        point_size=10, 
         render_points_as_spheres=True, 
         always_visible=True,
         fill_shape=False)
-            # Need to find a way to fix the force_float=False warning. 
-        
-    pl.add_lines(myVertices[0], color='white', width=2)
-    """
+    pl.add_legend(face=None)
+    pl.add_title('Dimensionality', font='arial', color='white', font_size=16)    
 
-    pl.show()
+    pl.open_movie('orbit.mp4')
+    pl.orbit_on_path(orbit, write_frames=True, step=0.0027, viewup=viewup)
+    pl.show(auto_close=False)
 
 showDimensionality()
-    # if dimensions higher than 3 are requested, conduct matrix multplication on each row of the vertices matrix to generate a 3D vector, and then display.
