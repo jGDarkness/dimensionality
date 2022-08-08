@@ -1,5 +1,7 @@
 ### LIBRARIES #######################################################################################################################################################
 #
+from hashlib import new
+from operator import ge
 import os
     # Console and file system interation.
 import scipy.special               
@@ -185,7 +187,7 @@ class flatten():
             return myFlattenedVertices, myVerticesRows
 
 def showDimensionality():
-    dims = 3
+    dims = 4
     magnitude = int(1)
         #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
     
@@ -204,7 +206,6 @@ def showDimensionality():
         ###########################################################################################################
     else:
         myNewVertices = matrices.verticesMatrix(dims, magnitude)
-        print (myNewVertices[0])
 
     numberOfPoints = shape.points(dims)
     
@@ -237,18 +238,12 @@ def showDimensionality():
         case 11:
             myLegend = "10D: A Tesseract of n=10 Dimensions"
 
-    
-    
-
     pl = pv.Plotter()
     
     viewup = [0,0,1]    
     orbit = pl.generate_orbital_path(factor=4.0, n_points=360, shift=3.0, viewup=viewup)
     
     pl.add_axes (line_width=3, labels_off=False)
-    #if dims < 4:
-    #    pl.add_bounding_box(line_width=1, color='white')
-    # Replace with unit distance tested line coordinates.
     pl.add_mesh(pv.PolyData(myNewVertices[0]), smooth_shading=True, label=myLegend, color='white')
     pl.add_point_labels(
         myNewVertices[0], 
@@ -263,16 +258,58 @@ def showDimensionality():
     pl.add_title('Dimensionality', font='arial', color='white', font_size=16)    
 
     # ADD CONNECTING LINES
-    i = 0
-    while i < 4:
-        #####
-        i += 1
 
+    if dims == 0:
+        pass
+            # Don't draw any connecting lines.
 
+    elif dims == 1:     # the second coordinate has the same value added to i as 'dim'
+        i = 0
+        lines = np.array((myNewVertices[0][i], myNewVertices[0][i+1]))
+        pl.add_lines(lines)
+            # Draw one connecting line between points.
+
+    elif dims == 2:
+        i = 0
+        while i < 4: # (dim * 2)
+            lines = np.array((myNewVertices[0][i], myNewVertices[0][(i + 2) % 2])) # ((i + dim) % dim)
+            pl.add_lines(lines)
+            i += 1 # (dim / 2)
+        i = 0
+        while i < 4: # (dim * 2)
+            lines2 = np.array((myNewVertices[0][i], myNewVertices[0][(i + 1) % 4])) # (i + (dim / 2)) % (dim / 2))
+            pl.add_lines(lines2)
+            i += 2 # (dim)
+            # Draw four lines connecting the plane.
+    
+    elif dims == 3:
+        i = 0
+        while i < 4: # (dim - 1)
+            lines = np.array((myNewVertices[0][i], myNewVertices[0][(i+2)%4])) # (i + (dim - 1) % (dim + 1))
+            pl.add_lines(lines)
+            lines2 = np.array((myNewVertices[0][i+4], myNewVertices[0][((i+2)%4)+4])) # ((i + (dim - 1)) % (dim + 1) + (dim + 1)) 
+            pl.add_lines(lines2)
+            lines3 = np.array((myNewVertices[0][i], myNewVertices[0][(i+4)])) # (i + (dim + 1))
+            pl.add_lines(lines3)
+            i += 1 # (dim / 3)
+        i = 0
+        while i < 4: # (dim - 1)
+            lines4 = np.array((myNewVertices[0][i], myNewVertices[0][(i+1)%4])) # (i + (dim - 3) % (dim + 1))
+            pl.add_lines(lines4)
+            lines5 = np.array((myNewVertices[0][i+4], myNewVertices[0][((i+1)%4)+4])) # ((i + (dims - 3) % (dim + 1)) + (dim + 1))
+            pl.add_lines(lines5)
+            i += 2 # (dim - 1)
+            # Draw lines connecting two planes to each other.
+    
+    elif dims == 4:
+        i = 0
+        while i < 4: # (dim)
+            lines = np.array((myNewVertices[0][i], myNewVertices[0][(i + 4) % 4])) # ((i + (dim)) % dim)
+            pl.add_lines(lines)
+            i += 1 #(dim / dim)
 
     pl.open_movie('orbit.mp4')
     pl.orbit_on_path(orbit, write_frames=True, step=0.0027, viewup=viewup)
-    
     pl.show(auto_close=False)
 
 showDimensionality()
