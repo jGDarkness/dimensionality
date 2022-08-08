@@ -1,7 +1,6 @@
 ### LIBRARIES #######################################################################################################################################################
 #
 import os
-from matplotlib import projections
     # Console and file system interation.
 import scipy.special               
     # 2-factor binomial transformation. 
@@ -14,7 +13,6 @@ from pyvista import examples
     # Data visulizations
 import warnings               
     # Capture and handle warnings.
-import tkinter                    
 from vtkmodules.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
     # Support for GUI interface using Tk          
 #
@@ -26,7 +24,6 @@ warnings.filterwarnings('ignore', '.*auto_close*')
     # Supress 'auto-close' warning from pyvista.
 
 class shape():
-
     def points(dimensions):
         points = 2**dimensions
         # points = "{:,}".format(points)
@@ -207,6 +204,7 @@ def showDimensionality():
         ###########################################################################################################
     else:
         myNewVertices = matrices.verticesMatrix(dims, magnitude)
+        print (myNewVertices[0])
 
     numberOfPoints = shape.points(dims)
     
@@ -246,9 +244,11 @@ def showDimensionality():
     
     viewup = [0,0,1]    
     orbit = pl.generate_orbital_path(factor=4.0, n_points=360, shift=3.0, viewup=viewup)
-
+    
     pl.add_axes (line_width=3, labels_off=False)
-    pl.add_bounding_box(line_width=1, color='white')
+    #if dims < 4:
+    #    pl.add_bounding_box(line_width=1, color='white')
+    # Replace with unit distance tested line coordinates.
     pl.add_mesh(pv.PolyData(myNewVertices[0]), smooth_shading=True, label=myLegend, color='white')
     pl.add_point_labels(
         myNewVertices[0], 
@@ -262,8 +262,17 @@ def showDimensionality():
     pl.add_legend(face=None)
     pl.add_title('Dimensionality', font='arial', color='white', font_size=16)    
 
+    # ADD CONNECTING LINES
+    i = 0
+    while i < 4:
+        #####
+        i += 1
+
+
+
     pl.open_movie('orbit.mp4')
     pl.orbit_on_path(orbit, write_frames=True, step=0.0027, viewup=viewup)
+    
     pl.show(auto_close=False)
 
 showDimensionality()
