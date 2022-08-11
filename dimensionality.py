@@ -1,7 +1,5 @@
 ### LIBRARIES #######################################################################################################################################################
 #
-from hashlib import new
-from operator import ge
 import os
     # Console and file system interation.
 import scipy.special               
@@ -187,7 +185,7 @@ class flatten():
             return myFlattenedVertices, myVerticesRows
 
 def showDimensionality():
-    dims = 4
+    dims = 0
     magnitude = int(1)
         #magnitude = int(input("What magnitude do you wish to apply to the shapes?\n"))
     
