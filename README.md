@@ -38,3 +38,9 @@ The number of "7-face"  Hepteracts (n+7D hypercubes)   in each Array[8]  is 2^(n
 The number of "8-face"  Octeracts (n+8D hypercubes)    in each Array[9]  is binomial(n+8,8) * 2^n                 offset 8 zeroes
 The number of "9-face"  Enneracts (n+9D hypercubes)    in each Array[10] is binomial(n+9,9) * 2^n                 offset 9 zeroes
 The number of "10-face" Dekeract (n+10D hypercubes)    in each Array[11] is binomial(0+n-1,n-1) * 2^0             offset 10 or more zeroes based on dimensionality
+
+## Stack Overflow
+
+Part of my "flattening" process has not yet been solved, and so I reached out on StackOverflow to see if anyone can help me solve my problem.
+
+https://stackoverflow.com/questions/73494497/how-do-i-avoid-duplicate-cartesian-coordinates-in-my-dynamically-generated-array

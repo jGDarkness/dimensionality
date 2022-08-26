@@ -145,6 +145,7 @@ class matrices():
             return verticesMatrix, rows
         else:
             verticesMatrix = magnitude * (2*((np.arange(2**dimensions)[:,None] & (1 << np.arange(dimensions))) > 0) - 1)
+            logging.info(("Orginal VerticesMatrix Generated:", verticesMatrix))
             rows, cols = verticesMatrix.shape
                 # Handles 3D and all higher dimensional requests.
 
@@ -410,6 +411,8 @@ class MyMainWindow(MainWindow):
         logging.info(("Hypercube Point Labels:", myLabels))
         self.plotter.add_mesh(pv.PolyData(myFlattenedVertices), smooth_shading=True, label=legend, color='white', show_edges=True)
         #self.plotter.add_point_labels(myFlattenedVertices[0], myLabels, font_size=8, point_color='red', point_size=8, render_points_as_spheres=True, always_visible=True, fill_shape=False)
+        # The second half of the points generated automatically are identicle to the first set of points generated, so instead of getting 16 unique points, I am
+        # getting 8 points, twice.
         self.plotter.add_axes(line_width=3, labels_off=False)
         self.plotter.add_legend(face=None)
        
