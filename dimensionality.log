@@ -1,25 +1,25 @@
-2022-08-25 18:58:28,984 - root - INFO - Logging has been configured.
-2022-08-25 18:58:28,985 - root - INFO - Traceback logging has been enabled.
-2022-08-25 18:58:28,985 - root - INFO - Warning filters enabled: '.*force_float.*' and '.*auto_close*'.
-2022-08-25 18:58:28,985 - root - INFO - Setting 'QT_API' to 'pyqt5'.
-2022-08-25 18:58:28,985 - root - INFO - Class 'MyMainWindow' has been called.
-2022-08-25 18:58:28,985 - root - INFO - executing 'if __name__ == __main__' to start app.
-2022-08-25 18:58:28,996 - root - INFO - def '__init__' has been called.
-2022-08-25 18:58:28,997 - root - INFO - Creating frame.
-2022-08-25 18:58:28,997 - root - INFO - Creating PyVista Interactor Object.
-2022-08-25 18:58:29,449 - root - INFO - Creating main menu.
-2022-08-25 18:58:29,458 - root - INFO - Creating 'File' submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Mesh' submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Sphere' item in Mesh submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Point' item in Mesh submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Line' item in Mesh submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Plane' item in Mesh submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Cube' item in Mesh submenu.
-2022-08-25 18:58:29,459 - root - INFO - Creating 'Hypercube' 4D item in Mesh submenu.
-2022-08-25 18:58:31,136 - root - INFO - Clearing the plotter and resetting isometric view.
-2022-08-25 18:58:31,137 - root - INFO - User has requested a hypercube - 4D in the plotter.
-2022-08-25 18:58:31,137 - root - INFO - Class.def 'matrices.verticesMatrix' invoked.
-2022-08-25 18:58:31,137 - root - INFO - ('Orginal VerticesMatrix Generated:', array([[-1, -1, -1, -1],
+2022-08-26 12:23:05,291 - root - INFO - Logging has been configured.
+2022-08-26 12:23:05,291 - root - INFO - Traceback logging has been enabled.
+2022-08-26 12:23:05,292 - root - INFO - Warning filters enabled: '.*force_float.*' and '.*auto_close*'.
+2022-08-26 12:23:05,292 - root - INFO - Setting 'QT_API' to 'pyqt5'.
+2022-08-26 12:23:05,292 - root - INFO - Class 'MyMainWindow' has been called.
+2022-08-26 12:23:05,292 - root - INFO - executing 'if __name__ == __main__' to start app.
+2022-08-26 12:23:05,413 - root - INFO - def '__init__' has been called.
+2022-08-26 12:23:05,414 - root - INFO - Creating frame.
+2022-08-26 12:23:05,414 - root - INFO - Creating PyVista Interactor Object.
+2022-08-26 12:23:05,997 - root - INFO - Creating main menu.
+2022-08-26 12:23:06,197 - root - INFO - Creating 'File' submenu.
+2022-08-26 12:23:06,197 - root - INFO - Creating 'Mesh' submenu.
+2022-08-26 12:23:06,197 - root - INFO - Creating 'Sphere' item in Mesh submenu.
+2022-08-26 12:23:06,197 - root - INFO - Creating 'Point' item in Mesh submenu.
+2022-08-26 12:23:06,198 - root - INFO - Creating 'Line' item in Mesh submenu.
+2022-08-26 12:23:06,198 - root - INFO - Creating 'Plane' item in Mesh submenu.
+2022-08-26 12:23:06,198 - root - INFO - Creating 'Cube' item in Mesh submenu.
+2022-08-26 12:23:06,198 - root - INFO - Creating 'Hypercube' 4D item in Mesh submenu.
+2022-08-26 12:23:13,240 - root - INFO - Clearing the plotter and resetting isometric view.
+2022-08-26 12:23:13,240 - root - INFO - User has requested a hypercube - 4D in the plotter.
+2022-08-26 12:23:13,240 - root - INFO - Class.def 'matrices.verticesMatrix' invoked.
+2022-08-26 12:23:13,240 - root - INFO - ('Orginal VerticesMatrix Generated:', array([[-1, -1, -1, -1],
        [ 1, -1, -1, -1],
        [-1,  1, -1, -1],
        [ 1,  1, -1, -1],
@@ -35,19 +35,19 @@
        [ 1, -1,  1,  1],
        [-1,  1,  1,  1],
        [ 1,  1,  1,  1]]))
-2022-08-25 18:58:31,137 - root - INFO - Class.def 'shape.points' invoked.
-2022-08-25 18:58:31,137 - root - INFO - Vertices successfully generated:
-2022-08-25 18:58:31,137 - root - INFO - Class.def 'shape.points' invoked.
-2022-08-25 18:58:31,137 - root - INFO - Class.def 'flatten.flattenHypercube' invoked.
-2022-08-25 18:58:31,137 - root - INFO - Class.def 'matrices.projectionMatrix' invoked.
-2022-08-25 18:58:31,137 - root - INFO - ('Projection Matrix:', array([[1, 0, 0, 0],
+2022-08-26 12:23:13,241 - root - INFO - Class.def 'shape.points' invoked.
+2022-08-26 12:23:13,241 - root - INFO - Vertices successfully generated:
+2022-08-26 12:23:13,241 - root - INFO - Class.def 'shape.points' invoked.
+2022-08-26 12:23:13,241 - root - INFO - Class.def 'flatten.flattenHypercube' invoked.
+2022-08-26 12:23:13,241 - root - INFO - Class.def 'matrices.projectionMatrix' invoked.
+2022-08-26 12:23:13,241 - root - INFO - ('Projection Matrix:', array([[1, 0, 0, 0],
        [0, 1, 0, 0],
        [0, 0, 1, 0]]))
-2022-08-25 18:58:31,137 - root - INFO - No errors preventing flattening the verticesMatrix.
-2022-08-25 18:58:31,138 - root - INFO - Shape of Empty Flattened Matrix
-2022-08-25 18:58:31,138 - root - INFO - (16, 3)
-2022-08-25 18:58:31,138 - root - INFO - Empty Flattened Matrix:
-2022-08-25 18:58:31,138 - root - INFO - [[-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]
+2022-08-26 12:23:13,241 - root - INFO - No errors preventing flattening the verticesMatrix.
+2022-08-26 12:23:13,241 - root - INFO - Shape of Empty Flattened Matrix
+2022-08-26 12:23:13,241 - root - INFO - (16, 3)
+2022-08-26 12:23:13,241 - root - INFO - Empty Flattened Matrix:
+2022-08-26 12:23:13,241 - root - INFO - [[-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]
  [-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]
  [-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]
  [-9.47979200e+306 -5.48612929e+303 -5.48612928e+303]
@@ -63,24 +63,24 @@
  [-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]
  [-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]
  [-5.48612928e+303 -5.48612928e+303 -5.48612928e+303]]
-2022-08-25 18:58:31,138 - root - INFO - (0, array([-1., -1., -1.]))
-2022-08-25 18:58:31,139 - root - INFO - (1, array([ 1., -1., -1.]))
-2022-08-25 18:58:31,139 - root - INFO - (2, array([-1.,  1., -1.]))
-2022-08-25 18:58:31,139 - root - INFO - (3, array([ 1.,  1., -1.]))
-2022-08-25 18:58:31,139 - root - INFO - (4, array([-1., -1.,  1.]))
-2022-08-25 18:58:31,139 - root - INFO - (5, array([ 1., -1.,  1.]))
-2022-08-25 18:58:31,139 - root - INFO - (6, array([-1.,  1.,  1.]))
-2022-08-25 18:58:31,139 - root - INFO - (7, array([1., 1., 1.]))
-2022-08-25 18:58:31,139 - root - INFO - (8, array([-1., -1., -1.]))
-2022-08-25 18:58:31,140 - root - INFO - (9, array([ 1., -1., -1.]))
-2022-08-25 18:58:31,140 - root - INFO - (10, array([-1.,  1., -1.]))
-2022-08-25 18:58:31,140 - root - INFO - (11, array([ 1.,  1., -1.]))
-2022-08-25 18:58:31,140 - root - INFO - (12, array([-1., -1.,  1.]))
-2022-08-25 18:58:31,140 - root - INFO - (13, array([ 1., -1.,  1.]))
-2022-08-25 18:58:31,140 - root - INFO - (14, array([-1.,  1.,  1.]))
-2022-08-25 18:58:31,140 - root - INFO - (15, array([1., 1., 1.]))
-2022-08-25 18:58:31,140 - root - INFO - Flattened Hypercube Coordinates Generated.
-2022-08-25 18:58:31,140 - root - INFO - ("Returned flattened vertices in def 'add_hypercube':", array([[-1., -1., -1.],
+2022-08-26 12:23:13,242 - root - INFO - (0, array([-1., -1., -1.]))
+2022-08-26 12:23:13,242 - root - INFO - (1, array([ 1., -1., -1.]))
+2022-08-26 12:23:13,242 - root - INFO - (2, array([-1.,  1., -1.]))
+2022-08-26 12:23:13,242 - root - INFO - (3, array([ 1.,  1., -1.]))
+2022-08-26 12:23:13,242 - root - INFO - (4, array([-1., -1.,  1.]))
+2022-08-26 12:23:13,242 - root - INFO - (5, array([ 1., -1.,  1.]))
+2022-08-26 12:23:13,243 - root - INFO - (6, array([-1.,  1.,  1.]))
+2022-08-26 12:23:13,243 - root - INFO - (7, array([1., 1., 1.]))
+2022-08-26 12:23:13,243 - root - INFO - (8, array([-1., -1., -1.]))
+2022-08-26 12:23:13,243 - root - INFO - (9, array([ 1., -1., -1.]))
+2022-08-26 12:23:13,243 - root - INFO - (10, array([-1.,  1., -1.]))
+2022-08-26 12:23:13,243 - root - INFO - (11, array([ 1.,  1., -1.]))
+2022-08-26 12:23:13,243 - root - INFO - (12, array([-1., -1.,  1.]))
+2022-08-26 12:23:13,243 - root - INFO - (13, array([ 1., -1.,  1.]))
+2022-08-26 12:23:13,243 - root - INFO - (14, array([-1.,  1.,  1.]))
+2022-08-26 12:23:13,243 - root - INFO - (15, array([1., 1., 1.]))
+2022-08-26 12:23:13,244 - root - INFO - Flattened Hypercube Coordinates Generated.
+2022-08-26 12:23:13,244 - root - INFO - ("Returned flattened vertices in def 'add_hypercube':", array([[-1., -1., -1.],
        [ 1., -1., -1.],
        [-1.,  1., -1.],
        [ 1.,  1., -1.],
@@ -96,5 +96,5 @@
        [ 1., -1.,  1.],
        [-1.,  1.,  1.],
        [ 1.,  1.,  1.]]))
-2022-08-25 18:58:31,141 - root - INFO - ('Hypercube Point Labels:', array([ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.,
+2022-08-26 12:23:13,244 - root - INFO - ('Hypercube Point Labels:', array([ 1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9., 10., 11., 12., 13.,
        14., 15., 16.]))

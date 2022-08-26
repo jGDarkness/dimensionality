@@ -7,9 +7,7 @@ from pyvista import examples
 import warnings
 from vtkmodules.tk.vtkTkRenderWindowInteractor import vtkTkRenderWindowInteractor
 import logging
-import threading
-from pyvistaqt import BackgroundPlotter
-from pyvistaqt import QtInteractor, MainWindow
+from pyvistaqt import BackgroundPlotter, QtInteractor, MainWindow
 import sys
 import os
 from qtpy import QtWidgets
@@ -125,15 +123,8 @@ class matrices():
         rows = int(0)
         cols = int(0)
 
-        projectionMatrix = np.ndarray(shape=(dimensions-1, dimensions), dtype=np.int32)
+        projectionMatrix = np.eye(dimensions-1, dimensions, dtype=np.int32)
         
-        for rows in range(dimensions-1):
-            for cols in range(dimensions):
-                if cols == rows:
-                    projectionMatrix[rows, cols] = 1
-                else:
-                    projectionMatrix[rows, cols] = 0
-
         return projectionMatrix
 
     def verticesMatrix(dimensions, magnitude):
