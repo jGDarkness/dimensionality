@@ -386,26 +386,71 @@ class MyMainWindow(MainWindow):
             self.plotter.add_lines(lines5)
             i += 2 # (dim - 1)
             # Draw lines connecting two planes to each other.
-
+            
     def add_hypercube(self):
-        logging.info("User has requested a hypercube - 4D in the plotter.")
-        myNewVertices = matrices.verticesMatrix(4, 1)
-        numberOfPoints = shape.points(4)
-
-        myFlattenedVertices = flatten.flattenHypercube(4, 1, numberOfPoints, myNewVertices)
-        logging.info(("Returned flattened vertices in def 'add_hypercube':", myFlattenedVertices))
-
+        logging.info("User has requested a hypercube in the plotter.")
+        myNewVertices = matrices.verticesMatrix(3, 1)
+        numberOfPoints = shape.points(3)
         myLabels = ()
         for rows in range(numberOfPoints):
             myLabels = np.append(myLabels, rows + 1)
-        legend = "4D: A Hypercube of n=4 Dimensions"
-        logging.info(("Hypercube Point Labels:", myLabels))
-        self.plotter.add_mesh(pv.PolyData(myFlattenedVertices), smooth_shading=True, label=legend, color='white', show_edges=True)
-        #self.plotter.add_point_labels(myFlattenedVertices[0], myLabels, font_size=8, point_color='red', point_size=8, render_points_as_spheres=True, always_visible=True, fill_shape=False)
-        # The second half of the points generated automatically are identicle to the first set of points generated, so instead of getting 16 unique points, I am
-        # getting 8 points, twice.
+        legend = "4D: A Hypercube"
+        self.plotter.add_mesh(pv.PolyData(myNewVertices[0]), smooth_shading=True, label=legend, color='white', show_edges=True)
+        self.plotter.add_point_labels(myNewVertices[0], myLabels, font_size=10, point_color='red', point_size=10, render_points_as_spheres=True, always_visible=True, fill_shape=False)
         self.plotter.add_axes(line_width=3, labels_off=False)
         self.plotter.add_legend(face=None)
+        i = 0
+        while i < 4: # (dim - 1)
+            lines = np.array((myNewVertices[0][i], myNewVertices[0][(i+2)%4])) # (i + (dim - 1) % (dim + 1))
+            self.plotter.add_lines(lines)
+            lines2 = np.array((myNewVertices[0][i+4], myNewVertices[0][((i+2)%4)+4])) # ((i + (dim - 1)) % (dim + 1) + (dim + 1)) 
+            self.plotter.add_lines(lines2)
+            lines3 = np.array((myNewVertices[0][i], myNewVertices[0][(i+4)])) # (i + (dim + 1))
+            self.plotter.add_lines(lines3)
+            i += 1 # (dim / 3)
+        i = 0
+        while i < 4: # (dim - 1)
+            lines4 = np.array((myNewVertices[0][i], myNewVertices[0][(i+1)%4])) # (i + (dim - 3) % (dim + 1))
+            self.plotter.add_lines(lines4)
+            lines5 = np.array((myNewVertices[0][i+4], myNewVertices[0][((i+1)%4)+4])) # ((i + (dims - 3) % (dim + 1)) + (dim + 1))
+            self.plotter.add_lines(lines5)
+            i += 2 # (dim - 1)
+            # Draw lines connecting two planes to each other.
+            
+        myNewVertices1 = matrices.verticesMatrix(3, 2)
+        numberOfPoints = shape.points(3)
+        myLabels2 = ()
+        for rows in range(numberOfPoints):
+            myLabels2 = np.append(myLabels2, ((rows + 1)*2))
+        self.plotter.add_mesh(pv.PolyData(myNewVertices1[0]), smooth_shading=True, label=legend, color='white', show_edges=True)
+        self.plotter.add_point_labels(myNewVertices1[0], myLabels2, font_size=10, point_color='red', point_size=10, render_points_as_spheres=True, always_visible=True, fill_shape=False)
+        self.plotter.add_axes(line_width=3, labels_off=False)
+        
+        i = 0
+        while i < 4: # (dim - 1)
+            lines6 = np.array((myNewVertices1[0][i], myNewVertices1[0][(i+2)%4])) # (i + (dim - 1) % (dim + 1))
+            self.plotter.add_lines(lines6)
+            lines7 = np.array((myNewVertices1[0][i+4], myNewVertices1[0][((i+2)%4)+4])) # ((i + (dim - 1)) % (dim + 1) + (dim + 1)) 
+            self.plotter.add_lines(lines7)
+            lines8 = np.array((myNewVertices1[0][i], myNewVertices1[0][(i+4)])) # (i + (dim + 1))
+            self.plotter.add_lines(lines8)
+            i += 1 # (dim / 3)
+        i = 0
+        while i < 4: # (dim - 1)
+            lines9 = np.array((myNewVertices1[0][i], myNewVertices1[0][(i+1)%4])) # (i + (dim - 3) % (dim + 1))
+            self.plotter.add_lines(lines9)
+            lines10 = np.array((myNewVertices1[0][i+4], myNewVertices1[0][((i+1)%4)+4])) # ((i + (dims - 3) % (dim + 1)) + (dim + 1))
+            self.plotter.add_lines(lines10)
+            i += 2 # (dim - 1)
+            # Draw lines connecting two planes to each other. 
+            
+        i = 0
+        while i < 8:
+            lines11 = np.array(np.array((myNewVertices[0][i], myNewVertices1[0][(i+8)%8])))
+            self.plotter.add_lines(lines11)
+            i += 1
+            # draw lines connecting two cubes together at the corner.
+                
        
 ### RUN ###
 if __name__ == "__main__":
